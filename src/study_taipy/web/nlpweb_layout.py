@@ -18,16 +18,17 @@ def analyze_text(text):
     scores = softmax(scores)
 
     data = {"Text": text,
-            "Score Pos": scores[2],
-            "Score Neu": scores[1],
-            "Score Neg": scores[0],
-            "Overall": scores[2]-scores[0]}
+                   "Score Pos": scores[2],
+                   "Score Neu": scores[1],
+                   "Score Neg": scores[0],
+                   "Overall": scores[2]-scores[0]}
 
     print("return_data".center(50, "*"))
     print(data)
     print("return_data".center(50, "*"))
-    data_df = pd.DataFrame(data, index=[0])
-    return data_df
+    return data
+    # data_df = pd.DataFrame(data, index=[0])
+    # return data_df
 
 
 text = "Original text"
@@ -43,7 +44,8 @@ def local_callback(state):
     notify(state, 'Info', f'The text is: {state.text}', True)
     temp = state.dataframe.copy()
     scores = analyze_text(state.text)
-    state.dataframe = pd.concat([temp, scores], ignore_index=True)
+    newdf = pd.DataFrame(scores, index=[temp.index.max() + 1])
+    state.dataframe = pd.concat([temp, newdf], ignore_index=False)
     state.text = ""
 
 
@@ -52,22 +54,28 @@ page = """
 
 # Getting started with Taipy GUI
 
+<|layout|columns=1 1|
+<|
 My text: <|{text}|>
 
 Enter a word:
 <|{text}|input|>
 <|Analyze|button|on_action=local_callback|>
+|>
 
-## Positive
-<|{np.mean(dataframe['Score Pos'])}|text|format=%.2f|>
+<|Table|expandable|
+<|{dataframe}|table|width=100%|>
+|>
+|>
 
-## Neutral
-<|{np.mean(dataframe['Score Neu'])}|text|format=%.2f|>
+<|layout|columns=1 1 1|
+## Positive <|{np.mean(dataframe['Score Pos'])}|text|format=%.2f|>
 
-## Negative
-<|{np.mean(dataframe['Score Neg'])}|text|format=%.2f|>
+## Neutral <|{np.mean(dataframe['Score Neu'])}|text|format=%.2f|>
 
-<|{dataframe}|table|>
+## Negative <|{np.mean(dataframe['Score Neg'])}|text|format=%.2f|>
+
+|>
 
 <|{dataframe}|chart|type=bar|x=Text|y[1]=Score Pos|y[2]=Score Neu|y[3]=Score Neg|y[4]=Overall|color[1]=green|color[2]=grey|color[3]=red|type[4]=line|>
 """
