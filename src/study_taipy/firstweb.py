@@ -12,6 +12,8 @@ My text: <|{text}|>
 <|{text}|input|>
 
 <|Run local|button|on_action=on_button_action|>
+
+<|{list_to_display}|chart|>
 """
 
 
@@ -25,5 +27,8 @@ def on_change(state, var_name, var_value):
         state.text = ""
         return
 
+
+# Step4: Charts
+list_to_display = [100/x for x in range(1, 100)]
 
 Gui(page=page).run(port=7942, use_reloader=debug_mode)
