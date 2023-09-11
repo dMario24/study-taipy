@@ -1,0 +1,10 @@
+
+[TASK.TASK_1]
+inputs = []
+outputs = []
+function = ""
+skippable = "False:bool"
+
+[DATA_NODE.DATA_NODE_1]
+storage_type = "pickle"
+scope = "SCENARIO:SCOPE"
