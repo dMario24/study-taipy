@@ -1,3 +1,15 @@
-from taipy import Gui
+from taipy.gui import Gui
 
-Gui(page="# Getting started with *Taipy*").run(port=7942)
+debug_mode = True
+
+text = "Original text"
+
+page = """
+# Gettting started with Taipy GUI
+
+My text: <|<{text}>|>
+
+<|{text}|input|>
+"""
+
+Gui(page=page).run(port=7942, use_reloader=debug_mode)
