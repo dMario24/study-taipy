@@ -33,6 +33,9 @@ My text: <|{text}|>
 <|{dataframe}|table|>
 
 <|{dataframe}|chart|type=bar|x=Text|y[1]=Score Pos|y[2]=Score Neu|y[3]=Score Neg|y[4]=Overall|color[1]=green|color[2]=grey|color[3]=red|type[4]=line|>
+
+### property_chart
+<|{dataframe}|chart|properties={property_chart}|>
 """
 
 
@@ -63,6 +66,18 @@ dataframe = pd.DataFrame({"Text": ['Test', 'Other', 'Love'],
                           "Score Neu": [2, 3, 1],
                           "Score Neg": [1, 2, 0],
                           "Overall": [0, -1, 4]})
+
+property_chart = {"type": "bar",
+                  "x": "Text",
+                  "y[1]": "Score Pos",
+                  "y[2]": "Score Neu",
+                  "y[3]": "Score Neg",
+                  "y[4]": "Overall",
+                  "color[1]": "green",
+                  "color[2]": "grey",
+                  "color[3]": "red",
+                  "type[4]": "line"
+                  }
 
 
 Gui(page=page).run(port=7942, use_reloader=debug_mode)
