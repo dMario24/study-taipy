@@ -32,18 +32,12 @@ def analyze_text(text):
 
 text = "Original text"
 
-dataframe = pd.DataFrame({"Text": [''],
-                          "Score Pos": [0.33],
-                          "Score Neu": [0.33],
-                          "Score Neg": [0.33],
-                          "Overall": [0]})
-
 
 def local_callback(state):
     notify(state, 'Info', f'The text is: {state.text}', True)
     temp = state.dataframe.copy()
     scores = analyze_text(state.text)
-    state.dataframe = temp.append(scores, ignore_index=True)
+    state.dataframe = pd.concat([temp, pd.DataFrame(scores)])
     state.text = ""
 
 
@@ -71,6 +65,12 @@ Enter a word:
 
 <|{dataframe}|chart|type=bar|x=Text|y[1]=Score Pos|y[2]=Score Neu|y[3]=Score Neg|y[4]=Overall|color[1]=green|color[2]=grey|color[3]=red|type[4]=line|>
 """
+
+dataframe = pd.DataFrame({"Text": [''],
+                          "Score Pos": [0.33],
+                          "Score Neu": [0.33],
+                          "Score Neg": [0.33],
+                          "Overall": [0]})
 
 
 Gui(page).run(port=7942, use_reloader=True)
