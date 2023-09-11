@@ -17,27 +17,33 @@ def analyze_text(text):
     scores = output[0][0].detach().numpy()
     scores = softmax(scores)
 
-    return_data = {"Text": text,
+    data = {"Text": text,
                    "Score Pos": scores[2],
                    "Score Neu": scores[1],
                    "Score Neg": scores[0],
                    "Overall": scores[2]-scores[0]}
 
     print("return_data".center(50, "*"))
-    print(return_data)
+    print(data)
     print("return_data".center(50, "*"))
-
-    return return_data
+    data_df = pd.DataFrame(data, index=[0])
+    return data_df
 
 
 text = "Original text"
+
+dataframe = pd.DataFrame({"Text": [''],
+                          "Score Pos": [0.33],
+                          "Score Neu": [0.33],
+                          "Score Neg": [0.33],
+                          "Overall": [0]})
 
 
 def local_callback(state):
     notify(state, 'Info', f'The text is: {state.text}', True)
     temp = state.dataframe.copy()
     scores = analyze_text(state.text)
-    state.dataframe = pd.concat([temp, pd.DataFrame(scores)])
+    state.dataframe = pd.concat([temp, scores], ignore_index=True)
     state.text = ""
 
 
@@ -65,12 +71,6 @@ Enter a word:
 
 <|{dataframe}|chart|type=bar|x=Text|y[1]=Score Pos|y[2]=Score Neu|y[3]=Score Neg|y[4]=Overall|color[1]=green|color[2]=grey|color[3]=red|type[4]=line|>
 """
-
-dataframe = pd.DataFrame({"Text": [''],
-                          "Score Pos": [0.33],
-                          "Score Neu": [0.33],
-                          "Score Neg": [0.33],
-                          "Overall": [0]})
 
 
 Gui(page).run(port=7942, use_reloader=True)

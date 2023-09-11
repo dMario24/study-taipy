@@ -22,3 +22,8 @@ ctest = "pytest --cov"
 ptest = "pytest -s"
 test = "pytest"
 runweb = "python src/study_taipy/web/firstweb.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "jupyter>=1.0.0",
+]

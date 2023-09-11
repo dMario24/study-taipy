@@ -18,10 +18,10 @@ def analyze_text(text):
     scores = softmax(scores)
 
     data = {"Text": text,
-                   "Score Pos": scores[2],
-                   "Score Neu": scores[1],
-                   "Score Neg": scores[0],
-                   "Overall": scores[2]-scores[0]}
+            "Score Pos": scores[2],
+            "Score Neu": scores[1],
+            "Score Neg": scores[0],
+            "Overall": scores[2]-scores[0]}
 
     print("return_data".center(50, "*"))
     print(data)
